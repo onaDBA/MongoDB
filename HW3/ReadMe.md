@@ -34,14 +34,14 @@ sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificat
 sudo docker network create mongo-net
 
 #add mongo net to MongoDB container
-sudo docker run --name mongo-server --network mongo-net -d -p 27017:27017 -v /home/ubuntu/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=otus123 mongo:5.0.4
+sudo docker run --name mongo-server --network mongo-net -d -p 27017:27017 -v /home/ubuntu/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=secret123 mongo:5.0.4
 
 #get containered Mongo ip
 sudo docker inspect mongo-server | grep IPAddress 
 172.18.0.2
 
 #run container with docker client
-sudo docker run -it --rm --name mongo-client --network mongo-net mongo:5.0.4 mongosh --host 172.18.0.2 -u root -p otus123 --authenticationDatabase admin
+sudo docker run -it --rm --name mongo-client --network mongo-net mongo:5.0.4 mongosh --host 172.18.0.2 -u root -p secret123 --authenticationDatabase admin
 
 #add test data
 show databases
@@ -50,15 +50,15 @@ db.peoples.insert({'Name':'Mickey'})
 db.peoples.find()
 
 #remote connection
-mongosh "mongodb://158.160.109.77:27017/" -u root -p otus123 --authenticationDatabase admin
+mongosh "mongodb://158.160.109.77:27017/" -u root -p secret123 --authenticationDatabase admin
 
 #recreate container
 docker ps
 docker stop 07a08bc8016e
 docker rm 07a08bc8016e
-sudo docker run --name mongo-server --network mongo-net -d -p 27017:27017 -v /home/ubuntu/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=otus123 mongo:5.0.4
+sudo docker run --name mongo-server --network mongo-net -d -p 27017:27017 -v /home/ubuntu/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=secret123 mongo:5.0.4
 
 #check that data are in place
-sudo docker run -it --rm --name mongo-client --network mongo-net mongo:5.0.4 mongosh --host 172.18.0.2 -u root -p otus123 --authenticationDatabase admin
+sudo docker run -it --rm --name mongo-client --network mongo-net mongo:5.0.4 mongosh --host 172.18.0.2 -u root -p secret123 --authenticationDatabase admin
 use test
 db.peoples.find()
